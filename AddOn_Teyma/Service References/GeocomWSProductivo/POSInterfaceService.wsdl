@@ -1,0 +1,2097 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://geoitd.geocom.com.uy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="POSInterfaceService" targetNamespace="http://geoitd.geocom.com.uy" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="BasicHttpBinding_IPOSInterfaceService1_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="CustomBinding_IPOSInterfaceService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256Sha256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp />
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <sp:EndorsingSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:X509Token sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+              <wsp:Policy>
+                <sp:RequireThumbprintReference />
+                <sp:WssX509V3Token10 />
+              </wsp:Policy>
+            </sp:X509Token>
+            <sp:SignedParts>
+              <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+            </sp:SignedParts>
+          </wsp:Policy>
+        </sp:EndorsingSupportingTokens>
+        <sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:MustSupportRefThumbprint />
+          </wsp:Policy>
+        </sp:Wss11>
+        <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:MustSupportIssuedTokens />
+            <sp:RequireClientEntropy />
+            <sp:RequireServerEntropy />
+          </wsp:Policy>
+        </sp:Trust10>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://geoitd.geocom.com.uy" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xs:import namespace="http://schemas.microsoft.com/Message" />
+      <xs:element name="processFinancialPurchase">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:PurchaseRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="PurchaseRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Request">
+            <xs:sequence>
+              <xs:element name="Amount" nillable="true" type="xs:string" />
+              <xs:element name="Quotas" type="xs:int" />
+              <xs:element name="Plan" type="xs:int" />
+              <xs:element name="Currency" nillable="true" type="xs:string" />
+              <xs:element name="TaxRefund" type="xs:int" />
+              <xs:element name="TaxableAmount" nillable="true" type="xs:string" />
+              <xs:element name="InvoiceAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Merchant" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="InvoiceNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Bin" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Issuer" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="NeedToReadCard" type="xs:boolean" />
+              <xs:element minOccurs="0" name="PinpadInitQuestion" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TerminalGroup" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TipAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="CiNoCheckDigit" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TransactionTimeout" type="xs:int" />
+              <xs:element minOccurs="0" name="TaxAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="CardAccountType" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="DeferredMonths" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="IVAAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Callback" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="SpecialData" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="CashbackAmount" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="PurchaseRequest" nillable="true" type="tns:PurchaseRequest" />
+      <xs:complexType name="Request">
+        <xs:sequence>
+          <xs:element name="PosID" nillable="true" type="xs:string" />
+          <xs:element name="SystemId" nillable="true" type="xs:string" />
+          <xs:element name="Branch" nillable="true" type="xs:string" />
+          <xs:element name="ClientAppId" nillable="true" type="xs:string" />
+          <xs:element name="UserId" nillable="true" type="xs:string" />
+          <xs:element name="TransactionDateTimeyyyyMMddHHmmssSSS" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Request" nillable="true" type="tns:Request" />
+      <xs:element name="processFinancialPurchaseResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="processFinancialPurchaseResult" nillable="true" type="tns:PurchaseResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="PurchaseResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Response">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="STransactionId" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TransactionId" type="xs:long" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="PurchaseResponse" nillable="true" type="tns:PurchaseResponse" />
+      <xs:complexType name="Response">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ResponseCode" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Response" nillable="true" type="tns:Response" />
+      <xs:element name="processOfflineFinancialPurchase">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:OfflinePurchaseRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="OfflinePurchaseRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Request">
+            <xs:sequence>
+              <xs:element name="Amount" nillable="true" type="xs:string" />
+              <xs:element name="Quotas" type="xs:int" />
+              <xs:element name="Plan" type="xs:int" />
+              <xs:element name="Currency" nillable="true" type="xs:string" />
+              <xs:element name="AuthorizationCode" nillable="true" type="xs:string" />
+              <xs:element name="LastNCardDigits" nillable="true" type="xs:string" />
+              <xs:element name="TaxRefund" type="xs:int" />
+              <xs:element name="TaxableAmount" nillable="true" type="xs:string" />
+              <xs:element name="InvoiceAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Merchant" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="InvoiceNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Bin" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Issuer" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="NeedToReadCard" type="xs:boolean" />
+              <xs:element minOccurs="0" name="PinpadInitQuestion" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TerminalGroup" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TipAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="CiNoCheckDigit" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TransactionTimeout" type="xs:int" />
+              <xs:element minOccurs="0" name="TaxAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="CardAccountType" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="DeferredMonths" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="IVAAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Callback" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="SpecialData" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="OfflinePurchaseRequest" nillable="true" type="tns:OfflinePurchaseRequest" />
+      <xs:element name="processOfflineFinancialPurchaseResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="processOfflineFinancialPurchaseResult" nillable="true" type="tns:OfflinePurchaseResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="OfflinePurchaseResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Response">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="STransactionId" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TransactionId" type="xs:long" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="OfflinePurchaseResponse" nillable="true" type="tns:OfflinePurchaseResponse" />
+      <xs:element name="processConfirmFinancialPurchase">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:ConfirmPurchaseRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="ConfirmPurchaseRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Request">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="TransactionId" type="xs:long" />
+              <xs:element name="Amount" nillable="true" type="xs:string" />
+              <xs:element name="Quotas" type="xs:int" />
+              <xs:element name="Plan" type="xs:int" />
+              <xs:element name="Currency" nillable="true" type="xs:string" />
+              <xs:element name="TaxRefund" type="xs:int" />
+              <xs:element name="TaxableAmount" nillable="true" type="xs:string" />
+              <xs:element name="InvoiceAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Merchant" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="InvoiceNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TransactionTimeout" type="xs:int" />
+              <xs:element minOccurs="0" name="TipAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TaxAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="CardAccountType" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="DeferredMonths" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="IVAAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="CiNoCheckDigit" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="STransactionId" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="CashbackAmount" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ConfirmPurchaseRequest" nillable="true" type="tns:ConfirmPurchaseRequest" />
+      <xs:element name="processConfirmFinancialPurchaseResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="processConfirmFinancialPurchaseResult" nillable="true" type="tns:ConfirmPurchaseResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="ConfirmPurchaseResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Response">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ConfirmPurchaseResponse" nillable="true" type="tns:ConfirmPurchaseResponse" />
+      <xs:element name="processFinancialReverse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:ReverseRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="ReverseRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Request">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="TransactionId" type="xs:long" />
+              <xs:element minOccurs="0" name="STransactionId" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ReverseRequest" nillable="true" type="tns:ReverseRequest" />
+      <xs:element name="processFinancialReverseResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="processFinancialReverseResult" nillable="true" type="tns:ReverseResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="ReverseResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Response">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ReverseResponse" nillable="true" type="tns:ReverseResponse" />
+      <xs:element name="cancelFinancialPurchase">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:CancelPurchaseRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="CancelPurchaseRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Request">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="TransactionId" type="xs:long" />
+              <xs:element minOccurs="0" name="STransactionId" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="CancelPurchaseRequest" nillable="true" type="tns:CancelPurchaseRequest" />
+      <xs:element name="cancelFinancialPurchaseResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="cancelFinancialPurchaseResult" nillable="true" type="tns:CancelPurchaseResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="CancelPurchaseResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Response">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="CancelPurchaseResponse" nillable="true" type="tns:CancelPurchaseResponse" />
+      <xs:element name="processFinancialPurchaseVoidByTicket">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:PurchaseVoidRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="PurchaseVoidRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Request">
+            <xs:sequence>
+              <xs:element name="TicketNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PinpadInitQuestion" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TerminalGroup" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TransactionTimeout" type="xs:int" />
+              <xs:element minOccurs="0" name="CiNoCheckDigit" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Merchant" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Bin" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Issuer" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Acquirer" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Callback" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="SpecialData" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="PurchaseVoidRequest" nillable="true" type="tns:PurchaseVoidRequest" />
+      <xs:element name="processFinancialPurchaseVoidByTicketResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="processFinancialPurchaseVoidByTicketResult" nillable="true" type="tns:PurchaseVoidResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="PurchaseVoidResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Response">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="STransactionId" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TransactionId" type="xs:long" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="PurchaseVoidResponse" nillable="true" type="tns:PurchaseVoidResponse" />
+      <xs:element name="processOfflineFinancialPurchaseVoidByTicket">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:OfflinePurchaseVoidRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="OfflinePurchaseVoidRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Request">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Acquirer" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Bin" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Callback" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="CiNoCheckDigit" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Issuer" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Merchant" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PinpadInitQuestion" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="SpecialData" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TerminalGroup" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TransactionTimeout" type="xs:int" />
+              <xs:element name="TicketNumber" nillable="true" type="xs:string" />
+              <xs:element name="AuthorizationCode" nillable="true" type="xs:string" />
+              <xs:element name="LastNCardDigits" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="OfflinePurchaseVoidRequest" nillable="true" type="tns:OfflinePurchaseVoidRequest" />
+      <xs:element name="processOfflineFinancialPurchaseVoidByTicketResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="processOfflineFinancialPurchaseVoidByTicketResult" nillable="true" type="tns:OfflinePurchaseVoidResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="OfflinePurchaseVoidResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Response">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="STransactionId" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TransactionId" type="xs:long" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="OfflinePurchaseVoidResponse" nillable="true" type="tns:OfflinePurchaseVoidResponse" />
+      <xs:element name="processFinancialPurchaseRefund">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:PurchaseRefundRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="PurchaseRefundRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Request">
+            <xs:sequence>
+              <xs:element name="TicketNumber" nillable="true" type="xs:string" />
+              <xs:element name="OriginalTransactionDateyyMMdd" nillable="true" type="xs:string" />
+              <xs:element name="Amount" nillable="true" type="xs:string" />
+              <xs:element name="Currency" nillable="true" type="xs:string" />
+              <xs:element name="Quotas" type="xs:int" />
+              <xs:element name="Plan" type="xs:int" />
+              <xs:element name="TaxableAmount" nillable="true" type="xs:string" />
+              <xs:element name="TaxRefund" type="xs:int" />
+              <xs:element name="InvoiceAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="InvoiceNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PinpadInitQuestion" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TerminalGroup" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TransactionTimeout" type="xs:int" />
+              <xs:element minOccurs="0" name="CiNoCheckDigit" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Merchant" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Bin" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Issuer" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="NeedToReadCard" type="xs:boolean" />
+              <xs:element minOccurs="0" name="CardAccountType" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="DeferredMonths" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="IVAAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TaxAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Callback" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="SpecialData" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="PurchaseRefundRequest" nillable="true" type="tns:PurchaseRefundRequest" />
+      <xs:element name="processFinancialPurchaseRefundResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="processFinancialPurchaseRefundResult" nillable="true" type="tns:PurchaseRefundResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="PurchaseRefundResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Response">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="STransactionId" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TransactionId" type="xs:long" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="PurchaseRefundResponse" nillable="true" type="tns:PurchaseRefundResponse" />
+      <xs:element name="processOfflineFinancialPurchaseRefund">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:OfflinePurchaseRefundRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="OfflinePurchaseRefundRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Request">
+            <xs:sequence>
+              <xs:element name="TicketNumber" nillable="true" type="xs:string" />
+              <xs:element name="OriginalTransactionDateyyMMdd" nillable="true" type="xs:string" />
+              <xs:element name="Amount" nillable="true" type="xs:string" />
+              <xs:element name="Currency" nillable="true" type="xs:string" />
+              <xs:element name="Quotas" type="xs:int" />
+              <xs:element name="Plan" type="xs:int" />
+              <xs:element name="AuthorizationCode" nillable="true" type="xs:string" />
+              <xs:element name="LastNCardDigits" nillable="true" type="xs:string" />
+              <xs:element name="TaxRefund" type="xs:int" />
+              <xs:element name="TaxableAmount" nillable="true" type="xs:string" />
+              <xs:element name="InvoiceAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="InvoiceNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PinpadInitQuestion" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TerminalGroup" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TransactionTimeout" type="xs:int" />
+              <xs:element minOccurs="0" name="CiNoCheckDigit" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Merchant" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Bin" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Issuer" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="NeedToReadCard" type="xs:boolean" />
+              <xs:element minOccurs="0" name="CardAccountType" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="DeferredMonths" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="IVAAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TaxAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Callback" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="SpecialData" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="OfflinePurchaseRefundRequest" nillable="true" type="tns:OfflinePurchaseRefundRequest" />
+      <xs:element name="processOfflineFinancialPurchaseRefundResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="processOfflineFinancialPurchaseRefundResult" nillable="true" type="tns:OfflinePurchaseRefundResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="OfflinePurchaseRefundResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Response">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="STransactionId" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TransactionId" type="xs:long" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="OfflinePurchaseRefundResponse" nillable="true" type="tns:OfflinePurchaseRefundResponse" />
+      <xs:element name="processFinancialPurchaseQuery">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:PurchaseQueryRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="PurchaseQueryRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Request">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="TransactionId" type="xs:long" />
+              <xs:element minOccurs="0" name="STransactionId" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="PurchaseQueryRequest" nillable="true" type="tns:PurchaseQueryRequest" />
+      <xs:element name="processFinancialPurchaseQueryResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="processFinancialPurchaseQueryResult" nillable="true" type="tns:PurchaseQueryResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="PurchaseQueryResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Response">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Acquirer" type="xs:int" />
+              <xs:element minOccurs="0" name="AcquirerTerminal" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="AdditionalData" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="AuthorizationCode" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Batch" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="CardAccountType" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="CardNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="CardOwnerName" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Ci" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Currency" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="EmvApplicationId" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="EmvApplicationName" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="ExpirationDate" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="InputMode" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="InvalidCardBinRead" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="InvalidCardIssuerRead" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="InvoiceNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Issuer" type="xs:int" />
+              <xs:element minOccurs="0" name="Merchant" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="MonthsDeferred" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="OriginCardType" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="OriginalTicket" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="POSSignature" nillable="true" type="tns:Signature" />
+              <xs:element minOccurs="0" name="Plan" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PosID" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PosResponseCode" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PosResponseCodeExtension" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PrivateUse1" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Quota" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="RemainingExpirationTime" type="xs:double" />
+              <xs:element minOccurs="0" name="ShowTextInCashBoxScreen" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="SpecialData" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TaxAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TaxRefund" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Ticket" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TipAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TotalAmount" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TransactionDate" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TransactionHour" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TransactionType" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="VoucherPrintInfo" nillable="true" type="tns:VoucherPrintInfo" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="PurchaseQueryResponse" nillable="true" type="tns:PurchaseQueryResponse" />
+      <xs:complexType name="Signature">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="SignaturePoints" nillable="true" type="tns:ArrayOfSignaturePoint" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Signature" nillable="true" type="tns:Signature" />
+      <xs:complexType name="ArrayOfSignaturePoint">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="SignaturePoint" nillable="true" type="tns:SignaturePoint" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfSignaturePoint" nillable="true" type="tns:ArrayOfSignaturePoint" />
+      <xs:complexType name="SignaturePoint">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DrawLineWithNextPoint" type="xs:boolean" />
+          <xs:element minOccurs="0" name="X" type="xs:int" />
+          <xs:element minOccurs="0" name="Y" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="SignaturePoint" nillable="true" type="tns:SignaturePoint" />
+      <xs:complexType name="VoucherPrintInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ClientVoucherBehavior" type="xs:int" />
+          <xs:element minOccurs="0" name="MerchantVoucherBehavior" type="xs:int" />
+          <xs:element minOccurs="0" name="RequestSignatureToClient" type="xs:boolean" />
+          <xs:element minOccurs="0" name="TextToPrintOnBothVoucher" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TextToPrintOnClientVoucher" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TextToPrintOnMerchantVoucher" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="VoucherPrintInfo" nillable="true" type="tns:VoucherPrintInfo" />
+      <xs:element name="processCardQuery">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:CardQueryRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="CardQueryRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Request">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="CardQueryRequest" nillable="true" type="tns:CardQueryRequest" />
+      <xs:element name="processCardQueryResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="processCardQueryResult" nillable="true" type="tns:CardQueryResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="CardQueryResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Response">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="STransactionId" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="TransactionId" type="xs:long" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="CardQueryResponse" nillable="true" type="tns:CardQueryResponse" />
+      <xs:element name="processQuery">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:QueryRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="QueryRequest">
+        <xs:sequence>
+          <xs:element name="SystemId" nillable="true" type="xs:string" />
+          <xs:element name="FromDateyyyyMMddHHmmss" nillable="true" type="xs:string" />
+          <xs:element name="ToDateyyyyMMddHHmmss" nillable="true" type="xs:string" />
+          <xs:element name="OnlyConfirmedTransactions" type="xs:boolean" />
+          <xs:element minOccurs="0" name="PosID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Branch" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ClientAppId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UserId" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="QueryRequest" nillable="true" type="tns:QueryRequest" />
+      <xs:element name="processQueryResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="processQueryResult" nillable="true" type="tns:QueryResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="QueryResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Response">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Transactions" nillable="true" type="tns:ArrayOfQueryTransaction" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="QueryResponse" nillable="true" type="tns:QueryResponse" />
+      <xs:complexType name="ArrayOfQueryTransaction">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="QueryTransaction" nillable="true" type="tns:QueryTransaction" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfQueryTransaction" nillable="true" type="tns:ArrayOfQueryTransaction" />
+      <xs:complexType name="QueryTransaction">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Acquirer" type="xs:int" />
+          <xs:element minOccurs="0" name="AcquirerTerminal" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="AdditionalData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="AuthorizationCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Batch" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Branch" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CardNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Ci" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ClientAppId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Currency" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="EmvApplicationId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="EmvApplicationName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ExpirationDate" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="InputMode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="InvoiceNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Issuer" type="xs:int" />
+          <xs:element minOccurs="0" name="Merchant" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MonthsDeferred" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OriginCardType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OriginalTicket" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="POSSignature" nillable="true" type="tns:Signature" />
+          <xs:element minOccurs="0" name="Plan" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PosID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PosResponseCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PosResponseCodeExtension" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PrivateUse1" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Quota" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="STransactionId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ShowTextInCashBoxScreen" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SpecialData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="State" type="xs:int" />
+          <xs:element minOccurs="0" name="TaxAmount" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TaxRefund" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Ticket" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TipAmount" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TotalAmount" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TransactionDate" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TransactionDateTimeyyyyMMddHHmmssSSS" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TransactionHour" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TransactionId" type="xs:long" />
+          <xs:element minOccurs="0" name="TransactionType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UserId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="VoucherPrintInfo" nillable="true" type="tns:VoucherPrintInfo" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="QueryTransaction" nillable="true" type="tns:QueryTransaction" />
+      <xs:element name="processCloseQuery">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:QueryCloseRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="QueryCloseRequest">
+        <xs:sequence>
+          <xs:element name="PosID" nillable="true" type="xs:string" />
+          <xs:element name="SystemId" nillable="true" type="xs:string" />
+          <xs:element name="Branch" nillable="true" type="xs:string" />
+          <xs:element name="ClientAppId" nillable="true" type="xs:string" />
+          <xs:element name="UserId" nillable="true" type="xs:string" />
+          <xs:element name="FromDateyyyyMMddHHmmss" nillable="true" type="xs:string" />
+          <xs:element name="ToDateyyyyMMddHHmmss" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="QueryCloseRequest" nillable="true" type="tns:QueryCloseRequest" />
+      <xs:element name="processCloseQueryResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="processCloseQueryResult" nillable="true" type="tns:QueryCloseResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="QueryCloseResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Response">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Transactions" nillable="true" type="tns:ArrayOfQueryCloseTransaction" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="QueryCloseResponse" nillable="true" type="tns:QueryCloseResponse" />
+      <xs:complexType name="ArrayOfQueryCloseTransaction">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="QueryCloseTransaction" nillable="true" type="tns:QueryCloseTransaction" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfQueryCloseTransaction" nillable="true" type="tns:ArrayOfQueryCloseTransaction" />
+      <xs:complexType name="QueryCloseTransaction">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Acquirer" type="xs:int" />
+          <xs:element minOccurs="0" name="AcquirerTerminal" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Batch" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CloseId" type="xs:long" />
+          <xs:element minOccurs="0" name="Merchant" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PosId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PosResponseCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SCloseId" nillable="true" type="xs:string" />
+          <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="STransactionsId" nillable="true" type="q1:ArrayOfstring" />
+          <xs:element minOccurs="0" name="TransactionDate" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TransactionHour" nillable="true" type="xs:string" />
+          <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="TransactionsId" nillable="true" type="q2:ArrayOflong" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="QueryCloseTransaction" nillable="true" type="tns:QueryCloseTransaction" />
+      <xs:element name="echoTest">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="echoTestResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="echoTestResult" nillable="true" type="tns:EchoResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="EchoResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Response">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="EchoResponse" nillable="true" type="tns:EchoResponse" />
+      <xs:element name="processCurrentTransactionsBatchQuery">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:QueryTransactionsCurrentBatchRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="QueryTransactionsCurrentBatchRequest">
+        <xs:sequence>
+          <xs:element name="PosID" nillable="true" type="xs:string" />
+          <xs:element name="SystemId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Branch" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ClientAppId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UserId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TransactionDateTimeyyyyMMddHHmmssSSS" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="QueryTransactionsCurrentBatchRequest" nillable="true" type="tns:QueryTransactionsCurrentBatchRequest" />
+      <xs:element name="processCurrentTransactionsBatchQueryResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="processCurrentTransactionsBatchQueryResult" nillable="true" type="tns:QueryTransactionsCurrentBatchResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="QueryTransactionsCurrentBatchResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Response">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Transactions" nillable="true" type="tns:ArrayOfQueryTransactionsCurrentBatchTransaction" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="QueryTransactionsCurrentBatchResponse" nillable="true" type="tns:QueryTransactionsCurrentBatchResponse" />
+      <xs:complexType name="ArrayOfQueryTransactionsCurrentBatchTransaction">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="QueryTransactionsCurrentBatchTransaction" nillable="true" type="tns:QueryTransactionsCurrentBatchTransaction" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfQueryTransactionsCurrentBatchTransaction" nillable="true" type="tns:ArrayOfQueryTransactionsCurrentBatchTransaction" />
+      <xs:complexType name="QueryTransactionsCurrentBatchTransaction">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Acquirer" type="xs:int" />
+          <xs:element minOccurs="0" name="AcquirerTerminal" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="AdditionalData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="AuthorizationCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Batch" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Branch" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CardNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Ci" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ClientAppId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Currency" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="EmvApplicationId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="EmvApplicationName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ExpirationDate" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="InputMode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="InvoiceNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Issuer" type="xs:int" />
+          <xs:element minOccurs="0" name="Merchant" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MonthsDeferred" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OriginCardType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OriginalTicket" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="POSSignature" nillable="true" type="tns:Signature" />
+          <xs:element minOccurs="0" name="Plan" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PosID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PosResponseCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PosResponseCodeExtension" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PrivateUse1" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Quota" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="STransactionId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ShowTextInCashBoxScreen" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SpecialData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="State" type="xs:int" />
+          <xs:element minOccurs="0" name="TaxAmount" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TaxRefund" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Ticket" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TipAmount" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TotalAmount" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TransactionDate" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TransactionDateTimeyyyyMMddHHmmssSSS" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TransactionHour" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TransactionId" type="xs:long" />
+          <xs:element minOccurs="0" name="TransactionType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UserId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="VoucherPrintInfo" nillable="true" type="tns:VoucherPrintInfo" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="QueryTransactionsCurrentBatchTransaction" nillable="true" type="tns:QueryTransactionsCurrentBatchTransaction" />
+      <xs:element name="processQueryLastNClose">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:QueryLastNCloseRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="QueryLastNCloseRequest">
+        <xs:sequence>
+          <xs:element name="TerminalNum" nillable="true" type="xs:string" />
+          <xs:element name="SystemId" nillable="true" type="xs:string" />
+          <xs:element name="LastNCloseReg" type="xs:int" />
+          <xs:element name="FromDateyyyyMMddHHmmss" nillable="true" type="xs:string" />
+          <xs:element name="ToDateyyyyMMddHHmmss" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="QueryLastNCloseRequest" nillable="true" type="tns:QueryLastNCloseRequest" />
+      <xs:element name="processQueryLastNCloseResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="processQueryLastNCloseResult" nillable="true" type="tns:QueryLastNCloseResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="QueryLastNCloseResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Response">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Acquirers" nillable="true" type="tns:ArrayOfAcquirer" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="QueryLastNCloseResponse" nillable="true" type="tns:QueryLastNCloseResponse" />
+      <xs:complexType name="ArrayOfAcquirer">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Acquirer" nillable="true" type="tns:Acquirer" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfAcquirer" nillable="true" type="tns:ArrayOfAcquirer" />
+      <xs:complexType name="Acquirer">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AcquirerCode" type="xs:int" />
+          <xs:element minOccurs="0" name="AcquirersClose" nillable="true" type="tns:ArrayOfAcquirerClose" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Acquirer" nillable="true" type="tns:Acquirer" />
+      <xs:complexType name="ArrayOfAcquirerClose">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="AcquirerClose" nillable="true" type="tns:AcquirerClose" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfAcquirerClose" nillable="true" type="tns:ArrayOfAcquirerClose" />
+      <xs:complexType name="AcquirerClose">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AcquirerCode" type="xs:int" />
+          <xs:element minOccurs="0" name="Batch" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CloseDate" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CloseTotals" nillable="true" type="tns:ArrayOfCloseTotal" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="AcquirerClose" nillable="true" type="tns:AcquirerClose" />
+      <xs:complexType name="ArrayOfCloseTotal">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CloseTotal" nillable="true" type="tns:CloseTotal" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfCloseTotal" nillable="true" type="tns:ArrayOfCloseTotal" />
+      <xs:complexType name="CloseTotal">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Currency" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Issuer" type="xs:int" />
+          <xs:element minOccurs="0" name="TaxRefund" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TotalAmount" type="xs:double" />
+          <xs:element minOccurs="0" name="TotalTaxRefundAmount" type="xs:double" />
+          <xs:element minOccurs="0" name="TransactionType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TransactionsCount" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CloseTotal" nillable="true" type="tns:CloseTotal" />
+      <xs:element name="echoTestTransaction">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:EchoTransactionRquest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="EchoTransactionRquest">
+        <xs:sequence>
+          <xs:element name="SystemId" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="EchoTransactionRquest" nillable="true" type="tns:EchoTransactionRquest" />
+      <xs:element name="echoTestTransactionResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="echoTestTransactionResult" nillable="true" type="tns:EchoTransactionResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="EchoTransactionResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Response">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="EchoTransactionResponse" nillable="true" type="tns:EchoTransactionResponse" />
+      <xs:element name="printDocument">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:PrintDocumentRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="PrintDocumentRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Request">
+            <xs:sequence>
+              <xs:element name="DocumentToPrint" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="PrintDocumentRequest" nillable="true" type="tns:PrintDocumentRequest" />
+      <xs:element name="printDocumentResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="printDocumentResult" nillable="true" type="tns:PrintDocumentResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="PrintDocumentResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Response">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="PrintDocumentResponse" nillable="true" type="tns:PrintDocumentResponse" />
+      <xs:element name="getHTMLTransactionTicket">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:TransactionTicketRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="TransactionTicketRequest">
+        <xs:sequence>
+          <xs:element name="SystemId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TransactionId" type="xs:long" />
+          <xs:element name="IsCopyForClient" type="xs:boolean" />
+          <xs:element minOccurs="0" name="ClientName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RUT" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="STransactionId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PrintReversed" type="xs:boolean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="TransactionTicketRequest" nillable="true" type="tns:TransactionTicketRequest" />
+      <xs:element name="getHTMLTransactionTicketResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="getHTMLTransactionTicketResult" nillable="true" type="tns:TransactionTicketResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="TransactionTicketResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Response">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Ticket" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="TransactionTicketResponse" nillable="true" type="tns:TransactionTicketResponse" />
+      <xs:element name="getHTMLTransactionTicketStream">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="SystemId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="TransactionId" type="xs:long" />
+            <xs:element minOccurs="0" name="STransactionId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="IsCopyForClient" type="xs:boolean" />
+            <xs:element minOccurs="0" name="ClientName" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="RUT" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="Address" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="PrintReversed" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getHTMLTransactionTicketStreamResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q3="http://schemas.microsoft.com/Message" name="getHTMLTransactionTicketStreamResult" type="q3:StreamBody" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getHTMLCloseBatchTicket">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:CloseBatchTicketRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="CloseBatchTicketRequest">
+        <xs:sequence>
+          <xs:element name="SystemId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TransactionId" type="xs:long" />
+          <xs:element minOccurs="0" name="ClientName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RUT" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="STransactionId" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CloseBatchTicketRequest" nillable="true" type="tns:CloseBatchTicketRequest" />
+      <xs:element name="getHTMLCloseBatchTicketResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="getHTMLCloseBatchTicketResult" nillable="true" type="tns:CloseBatchTicketResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="CloseBatchTicketResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Response">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Ticket" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="CloseBatchTicketResponse" nillable="true" type="tns:CloseBatchTicketResponse" />
+      <xs:element name="getHTMLCloseBatchTicketStream">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="SystemId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="TransactionId" type="xs:long" />
+            <xs:element minOccurs="0" name="STransactionId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="ClientName" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="RUT" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="Address" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getHTMLCloseBatchTicketStreamResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q4="http://schemas.microsoft.com/Message" name="getHTMLCloseBatchTicketStreamResult" type="q4:StreamBody" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="anyType" nillable="true" type="xs:anyType" />
+      <xs:element name="anyURI" nillable="true" type="xs:anyURI" />
+      <xs:element name="base64Binary" nillable="true" type="xs:base64Binary" />
+      <xs:element name="boolean" nillable="true" type="xs:boolean" />
+      <xs:element name="byte" nillable="true" type="xs:byte" />
+      <xs:element name="dateTime" nillable="true" type="xs:dateTime" />
+      <xs:element name="decimal" nillable="true" type="xs:decimal" />
+      <xs:element name="double" nillable="true" type="xs:double" />
+      <xs:element name="float" nillable="true" type="xs:float" />
+      <xs:element name="int" nillable="true" type="xs:int" />
+      <xs:element name="long" nillable="true" type="xs:long" />
+      <xs:element name="QName" nillable="true" type="xs:QName" />
+      <xs:element name="short" nillable="true" type="xs:short" />
+      <xs:element name="string" nillable="true" type="xs:string" />
+      <xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte" />
+      <xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt" />
+      <xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong" />
+      <xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort" />
+      <xs:element name="char" nillable="true" type="tns:char" />
+      <xs:simpleType name="char">
+        <xs:restriction base="xs:int" />
+      </xs:simpleType>
+      <xs:element name="duration" nillable="true" type="tns:duration" />
+      <xs:simpleType name="duration">
+        <xs:restriction base="xs:duration">
+          <xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?" />
+          <xs:minInclusive value="-P10675199DT2H48M5.4775808S" />
+          <xs:maxInclusive value="P10675199DT2H48M5.4775807S" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="guid" nillable="true" type="tns:guid" />
+      <xs:simpleType name="guid">
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:attribute name="FactoryType" type="xs:QName" />
+      <xs:attribute name="Id" type="xs:ID" />
+      <xs:attribute name="Ref" type="xs:IDREF" />
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/Arrays" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="ArrayOfstring">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfstring" nillable="true" type="tns:ArrayOfstring" />
+      <xs:complexType name="ArrayOflong">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="long" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOflong" nillable="true" type="tns:ArrayOflong" />
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.microsoft.com/Message" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/Message" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:simpleType name="StreamBody">
+        <xs:restriction base="xs:base64Binary" />
+      </xs:simpleType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="IPOSInterfaceService_processFinancialPurchase_InputMessage">
+    <wsdl:part name="parameters" element="tns:processFinancialPurchase" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processFinancialPurchase_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processFinancialPurchaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processOfflineFinancialPurchase_InputMessage">
+    <wsdl:part name="parameters" element="tns:processOfflineFinancialPurchase" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processOfflineFinancialPurchase_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processOfflineFinancialPurchaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processConfirmFinancialPurchase_InputMessage">
+    <wsdl:part name="parameters" element="tns:processConfirmFinancialPurchase" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processConfirmFinancialPurchase_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processConfirmFinancialPurchaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processFinancialReverse_InputMessage">
+    <wsdl:part name="parameters" element="tns:processFinancialReverse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processFinancialReverse_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processFinancialReverseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_cancelFinancialPurchase_InputMessage">
+    <wsdl:part name="parameters" element="tns:cancelFinancialPurchase" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_cancelFinancialPurchase_OutputMessage">
+    <wsdl:part name="parameters" element="tns:cancelFinancialPurchaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processFinancialPurchaseVoidByTicket_InputMessage">
+    <wsdl:part name="parameters" element="tns:processFinancialPurchaseVoidByTicket" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processFinancialPurchaseVoidByTicket_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processFinancialPurchaseVoidByTicketResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processOfflineFinancialPurchaseVoidByTicket_InputMessage">
+    <wsdl:part name="parameters" element="tns:processOfflineFinancialPurchaseVoidByTicket" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processOfflineFinancialPurchaseVoidByTicket_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processOfflineFinancialPurchaseVoidByTicketResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processFinancialPurchaseRefund_InputMessage">
+    <wsdl:part name="parameters" element="tns:processFinancialPurchaseRefund" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processFinancialPurchaseRefund_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processFinancialPurchaseRefundResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processOfflineFinancialPurchaseRefund_InputMessage">
+    <wsdl:part name="parameters" element="tns:processOfflineFinancialPurchaseRefund" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processOfflineFinancialPurchaseRefund_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processOfflineFinancialPurchaseRefundResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processFinancialPurchaseQuery_InputMessage">
+    <wsdl:part name="parameters" element="tns:processFinancialPurchaseQuery" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processFinancialPurchaseQuery_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processFinancialPurchaseQueryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processCardQuery_InputMessage">
+    <wsdl:part name="parameters" element="tns:processCardQuery" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processCardQuery_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processCardQueryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processQuery_InputMessage">
+    <wsdl:part name="parameters" element="tns:processQuery" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processQuery_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processQueryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processCloseQuery_InputMessage">
+    <wsdl:part name="parameters" element="tns:processCloseQuery" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processCloseQuery_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processCloseQueryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_echoTest_InputMessage">
+    <wsdl:part name="parameters" element="tns:echoTest" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_echoTest_OutputMessage">
+    <wsdl:part name="parameters" element="tns:echoTestResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processCurrentTransactionsBatchQuery_InputMessage">
+    <wsdl:part name="parameters" element="tns:processCurrentTransactionsBatchQuery" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processCurrentTransactionsBatchQuery_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processCurrentTransactionsBatchQueryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processQueryLastNClose_InputMessage">
+    <wsdl:part name="parameters" element="tns:processQueryLastNClose" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processQueryLastNClose_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processQueryLastNCloseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_echoTestTransaction_InputMessage">
+    <wsdl:part name="parameters" element="tns:echoTestTransaction" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_echoTestTransaction_OutputMessage">
+    <wsdl:part name="parameters" element="tns:echoTestTransactionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_printDocument_InputMessage">
+    <wsdl:part name="parameters" element="tns:printDocument" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_printDocument_OutputMessage">
+    <wsdl:part name="parameters" element="tns:printDocumentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_getHTMLTransactionTicket_InputMessage">
+    <wsdl:part name="parameters" element="tns:getHTMLTransactionTicket" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_getHTMLTransactionTicket_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getHTMLTransactionTicketResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_getHTMLTransactionTicketStream_InputMessage">
+    <wsdl:part name="parameters" element="tns:getHTMLTransactionTicketStream" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_getHTMLTransactionTicketStream_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getHTMLTransactionTicketStreamResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_getHTMLCloseBatchTicket_InputMessage">
+    <wsdl:part name="parameters" element="tns:getHTMLCloseBatchTicket" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_getHTMLCloseBatchTicket_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getHTMLCloseBatchTicketResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_getHTMLCloseBatchTicketStream_InputMessage">
+    <wsdl:part name="parameters" element="tns:getHTMLCloseBatchTicketStream" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_getHTMLCloseBatchTicketStream_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getHTMLCloseBatchTicketStreamResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IPOSInterfaceService">
+    <wsdl:operation name="processFinancialPurchase">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchase" message="tns:IPOSInterfaceService_processFinancialPurchase_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseResponse" message="tns:IPOSInterfaceService_processFinancialPurchase_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchase">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchase" message="tns:IPOSInterfaceService_processOfflineFinancialPurchase_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseResponse" message="tns:IPOSInterfaceService_processOfflineFinancialPurchase_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processConfirmFinancialPurchase">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processConfirmFinancialPurchase" message="tns:IPOSInterfaceService_processConfirmFinancialPurchase_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processConfirmFinancialPurchaseResponse" message="tns:IPOSInterfaceService_processConfirmFinancialPurchase_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialReverse">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialReverse" message="tns:IPOSInterfaceService_processFinancialReverse_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialReverseResponse" message="tns:IPOSInterfaceService_processFinancialReverse_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="cancelFinancialPurchase">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/cancelFinancialPurchase" message="tns:IPOSInterfaceService_cancelFinancialPurchase_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/cancelFinancialPurchaseResponse" message="tns:IPOSInterfaceService_cancelFinancialPurchase_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseVoidByTicket">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseVoidByTicket" message="tns:IPOSInterfaceService_processFinancialPurchaseVoidByTicket_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseVoidByTicketResponse" message="tns:IPOSInterfaceService_processFinancialPurchaseVoidByTicket_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchaseVoidByTicket">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseVoidByTicket" message="tns:IPOSInterfaceService_processOfflineFinancialPurchaseVoidByTicket_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseVoidByTicketResponse" message="tns:IPOSInterfaceService_processOfflineFinancialPurchaseVoidByTicket_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseRefund">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseRefund" message="tns:IPOSInterfaceService_processFinancialPurchaseRefund_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseRefundResponse" message="tns:IPOSInterfaceService_processFinancialPurchaseRefund_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchaseRefund">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseRefund" message="tns:IPOSInterfaceService_processOfflineFinancialPurchaseRefund_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseRefundResponse" message="tns:IPOSInterfaceService_processOfflineFinancialPurchaseRefund_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseQuery">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseQuery" message="tns:IPOSInterfaceService_processFinancialPurchaseQuery_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseQueryResponse" message="tns:IPOSInterfaceService_processFinancialPurchaseQuery_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processCardQuery">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCardQuery" message="tns:IPOSInterfaceService_processCardQuery_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCardQueryResponse" message="tns:IPOSInterfaceService_processCardQuery_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processQuery">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processQuery" message="tns:IPOSInterfaceService_processQuery_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processQueryResponse" message="tns:IPOSInterfaceService_processQuery_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processCloseQuery">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCloseQuery" message="tns:IPOSInterfaceService_processCloseQuery_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCloseQueryResponse" message="tns:IPOSInterfaceService_processCloseQuery_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="echoTest">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/echoTest" message="tns:IPOSInterfaceService_echoTest_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/echoTestResponse" message="tns:IPOSInterfaceService_echoTest_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processCurrentTransactionsBatchQuery">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCurrentTransactionsBatchQuery" message="tns:IPOSInterfaceService_processCurrentTransactionsBatchQuery_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCurrentTransactionsBatchQueryResponse" message="tns:IPOSInterfaceService_processCurrentTransactionsBatchQuery_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processQueryLastNClose">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processQueryLastNClose" message="tns:IPOSInterfaceService_processQueryLastNClose_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processQueryLastNCloseResponse" message="tns:IPOSInterfaceService_processQueryLastNClose_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="echoTestTransaction">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/echoTestTransaction" message="tns:IPOSInterfaceService_echoTestTransaction_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/echoTestTransactionResponse" message="tns:IPOSInterfaceService_echoTestTransaction_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="printDocument">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/printDocument" message="tns:IPOSInterfaceService_printDocument_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/printDocumentResponse" message="tns:IPOSInterfaceService_printDocument_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLTransactionTicket">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLTransactionTicket" message="tns:IPOSInterfaceService_getHTMLTransactionTicket_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLTransactionTicketResponse" message="tns:IPOSInterfaceService_getHTMLTransactionTicket_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLTransactionTicketStream">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLTransactionTicketStream" message="tns:IPOSInterfaceService_getHTMLTransactionTicketStream_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLTransactionTicketStreamResponse" message="tns:IPOSInterfaceService_getHTMLTransactionTicketStream_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLCloseBatchTicket">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLCloseBatchTicket" message="tns:IPOSInterfaceService_getHTMLCloseBatchTicket_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLCloseBatchTicketResponse" message="tns:IPOSInterfaceService_getHTMLCloseBatchTicket_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLCloseBatchTicketStream">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLCloseBatchTicketStream" message="tns:IPOSInterfaceService_getHTMLCloseBatchTicketStream_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLCloseBatchTicketStreamResponse" message="tns:IPOSInterfaceService_getHTMLCloseBatchTicketStream_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IPOSInterfaceService" type="tns:IPOSInterfaceService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="processFinancialPurchase">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchase">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processConfirmFinancialPurchase">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processConfirmFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialReverse">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialReverse" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelFinancialPurchase">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/cancelFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseVoidByTicket">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseVoidByTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchaseVoidByTicket">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseVoidByTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseRefund">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseRefund" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchaseRefund">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseRefund" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseQuery">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCardQuery">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCardQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processQuery">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCloseQuery">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCloseQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="echoTest">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/echoTest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCurrentTransactionsBatchQuery">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCurrentTransactionsBatchQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processQueryLastNClose">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processQueryLastNClose" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="echoTestTransaction">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/echoTestTransaction" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="printDocument">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/printDocument" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLTransactionTicket">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLTransactionTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLTransactionTicketStream">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLTransactionTicketStream" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLCloseBatchTicket">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLCloseBatchTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLCloseBatchTicketStream">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLCloseBatchTicketStream" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BasicHttpBinding_IPOSInterfaceService1" type="tns:IPOSInterfaceService">
+    <wsp:PolicyReference URI="#BasicHttpBinding_IPOSInterfaceService1_policy" />
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="processFinancialPurchase">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchase">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processConfirmFinancialPurchase">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processConfirmFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialReverse">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialReverse" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelFinancialPurchase">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/cancelFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseVoidByTicket">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseVoidByTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchaseVoidByTicket">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseVoidByTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseRefund">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseRefund" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchaseRefund">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseRefund" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseQuery">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCardQuery">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCardQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processQuery">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCloseQuery">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCloseQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="echoTest">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/echoTest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCurrentTransactionsBatchQuery">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCurrentTransactionsBatchQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processQueryLastNClose">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processQueryLastNClose" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="echoTestTransaction">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/echoTestTransaction" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="printDocument">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/printDocument" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLTransactionTicket">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLTransactionTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLTransactionTicketStream">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLTransactionTicketStream" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLCloseBatchTicket">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLCloseBatchTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLCloseBatchTicketStream">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLCloseBatchTicketStream" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CustomBinding_IPOSInterfaceService" type="tns:IPOSInterfaceService">
+    <wsp:PolicyReference URI="#CustomBinding_IPOSInterfaceService_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="processFinancialPurchase">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchase">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processConfirmFinancialPurchase">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processConfirmFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialReverse">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialReverse" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelFinancialPurchase">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/cancelFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseVoidByTicket">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseVoidByTicket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchaseVoidByTicket">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseVoidByTicket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseRefund">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseRefund" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchaseRefund">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseRefund" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseQuery">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseQuery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCardQuery">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCardQuery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processQuery">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processQuery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCloseQuery">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCloseQuery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="echoTest">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/echoTest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCurrentTransactionsBatchQuery">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCurrentTransactionsBatchQuery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processQueryLastNClose">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processQueryLastNClose" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="echoTestTransaction">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/echoTestTransaction" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="printDocument">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/printDocument" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLTransactionTicket">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLTransactionTicket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLTransactionTicketStream">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLTransactionTicketStream" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLCloseBatchTicket">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLCloseBatchTicket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLCloseBatchTicketStream">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLCloseBatchTicketStream" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="POSInterfaceService">
+    <wsdl:port name="BasicHttpBinding_IPOSInterfaceService" binding="tns:BasicHttpBinding_IPOSInterfaceService">
+      <soap:address location="http://geoitd.geocom.com.uy:8554/v2/ITDService" />
+    </wsdl:port>
+    <wsdl:port name="BasicHttpBinding_IPOSInterfaceService1" binding="tns:BasicHttpBinding_IPOSInterfaceService1">
+      <soap:address location="https://geoitd.geocom.com.uy:8556/v2/ITDService/soap" />
+    </wsdl:port>
+    <wsdl:port name="CustomBinding_IPOSInterfaceService" binding="tns:CustomBinding_IPOSInterfaceService">
+      <soap12:address location="https://geoitd.geocom.com.uy:8556/v2/ITDService/wSign" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>https://geoitd.geocom.com.uy:8556/v2/ITDService/wSign</wsa10:Address>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
