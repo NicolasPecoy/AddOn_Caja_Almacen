@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Bruno Giovani Mulinari</Authors>
+    <PackageProjectUrl>https://github.com/bgmulinari/B1SLayer</PackageProjectUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <Description>A lightweight SAP Business One Service Layer client for .NET.</Description>
+    <RepositoryUrl>https://github.com/bgmulinari/B1SLayer.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>sap business one;b1;service layer;http client;fluent;flurl</PackageTags>
+    <PackageReleaseNotes>https://github.com/bgmulinari/B1SLayer/releases</PackageReleaseNotes>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.2.0</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>B1SLayer.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="B1SLayer.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="B1SLayer.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Flurl.Http" Version="3.2.2" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
